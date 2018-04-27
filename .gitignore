@@ -103,5 +103,5 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-log
+log.txt
 conf.py

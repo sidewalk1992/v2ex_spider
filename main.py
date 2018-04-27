@@ -1,5 +1,7 @@
 #coding=utf-8
 
+import time
+
 import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
@@ -19,8 +21,11 @@ class V2exSpider:
     def fetch_html(self, url):
         """获取页面 content """
         headers = {'User-Agent': ua.random}
-        resp = requests.get(url, headers=headers, cookies=cookies)
-        return resp.content
+        resp = requests.get(url, headers=headers, cookies=cookies, timeout=10)
+        if resp.status_code == 200:
+            return resp.content
+        else:
+            logger.error('resp.status_code: %s' % resp.status_code)
 
     def parse_topics_page(self, html):
         """解析话题列表页面"""
@@ -31,11 +36,7 @@ class V2exSpider:
             url = '%s%s' % (self.homepage, item_title.a.get('href').split('#')[0])
             title = item_title.a.text
             author = topic_info.find('strong').a.text
-            entity = session.query(Topic).filter_by(url=url).first()
-            if not entity:
-                t = Topic(url=url, author=author, title=title)
-                t.save()
-                logger.info(t)
+            self.save(url, author, title)
             # 解析详情页
             # topic_html = self.fetch_html(url)
             # self.parse_topic_page(url, topic_html)
@@ -53,11 +54,29 @@ class V2exSpider:
             t.save()
             logger.info(t)
 
+    def save(self, url, author, title):
+        entity = session.query(Topic).filter_by(url=url).first()
+        if entity:
+            logger.warning('topic已存在，id:%s' % entity.id)
+        else:
+            t = Topic(url=url, author=author, title=title)
+            t.save()
+            logger.info(t)
+        
     def main(self):
-        urls = ['{homepage}/recent?p={index}'.format(homepage=self.homepage, index=i) for i in range(1, 14692)]  # 14692
+        fail_cnt = 0
+        urls = ['{homepage}/recent?p={index}'.format(homepage=self.homepage, index=i) for i in range(1794, 14692)]  # 14692
         for url in urls:
-            html = self.fetch_html(url)
-            self.parse_topics_page(html)
+            logger.info('Featching: %s' % url)
+            time.sleep(1)
+            try:
+                html = self.fetch_html(url)
+                self.parse_topics_page(html)
+                fail_cnt = 0
+            except:
+                fail_cnt += 1
+            if fail_cnt > 30:
+                break
 
 
 if __name__ == '__main__':
