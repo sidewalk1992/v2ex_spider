@@ -1,6 +1,7 @@
 #coding=utf-8
 
 import time
+import traceback
 
 import requests
 from bs4 import BeautifulSoup
@@ -65,7 +66,7 @@ class V2exSpider:
         
     def main(self):
         fail_cnt = 0
-        urls = ['{homepage}/recent?p={index}'.format(homepage=self.homepage, index=i) for i in range(1794, 14692)]  # 14692
+        urls = ['{homepage}/recent?p={index}'.format(homepage=self.homepage, index=i) for i in range(2761, 14692)]  # 14692
         for url in urls:
             logger.info('Featching: %s' % url)
             time.sleep(1)
@@ -75,6 +76,7 @@ class V2exSpider:
                 fail_cnt = 0
             except:
                 fail_cnt += 1
+                logger.error(traceback.format_exc())
             if fail_cnt > 30:
                 break
 
