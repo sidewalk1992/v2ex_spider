@@ -66,7 +66,7 @@ class V2exSpider:
         
     def main(self):
         fail_cnt = 0
-        urls = ['{homepage}/recent?p={index}'.format(homepage=self.homepage, index=i) for i in range(2761, 14692)]  # 14692
+        urls = ['{homepage}/recent?p={index}'.format(homepage=self.homepage, index=i) for i in range(0, 14692)]  # 14692
         for url in urls:
             logger.info('Featching: %s' % url)
             time.sleep(1)
