@@ -22,7 +22,7 @@ class Topic(base):
     author = Column(String(128), nullable=False)
     title = Column(String(128), nullable=False)
     description = Column(Text)
-    create_dt = Column(DateTime, default=datetime.datetime.utcnow)
+    create_dt = Column(DateTime, default=datetime.datetime.now)
 
     __table_args__ = (
     # UniqueConstraint('author', 'title', name='uniq_author_title')
@@ -38,6 +38,14 @@ class Topic(base):
     def save(self):
         session.add(self)
         session.commit()
+
+    def to_dict(self):
+        return {
+            'topic_id': self.id,
+            'url': self.url,
+            'title': self.title,
+            'create_dt': str(self.create_dt),
+        }
 
 
 if __name__ == '__main__':
