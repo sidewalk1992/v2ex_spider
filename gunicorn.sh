@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PORT=8888
+PORT=9999
 
 start(){
     gunicorn flask_api:app \
