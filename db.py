@@ -9,10 +9,11 @@ from sqlalchemy.orm import sessionmaker, mapper
 from conf import username, password, host, db
 
 engine = create_engine("mysql+pymysql://{username}:{password}@{host}{db}?charset=utf8".\
-    format(username=username, password=password, host=host, db=db))
+    format(username=username, password=password, host=host, db=db), pool_size=8, echo_pool=True)
 base = declarative_base(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
+session.connection()
 
 
 class Topic(base):

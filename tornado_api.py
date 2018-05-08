@@ -3,6 +3,7 @@ import os
 import tornado.web
 import tornado.gen
 import tornado.ioloop
+import tornado.options
 
 from db import session, Topic
 
@@ -19,6 +20,8 @@ class IndexHandler(tornado.web.RequestHandler):
 
 
 if __name__ == '__main__':
+    tornado.options.options.logging = 'debug'
+    tornado.options.parse_command_line()
     settings = {
         'template_path': os.path.join(os.path.dirname(__name__), 'templates'),
         'static_path': os.path.join(os.path.dirname(__file__) , "static"),

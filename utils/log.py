@@ -3,7 +3,7 @@
 import logging
 
 formatter = logging.Formatter('%(asctime)s: %(filename)s [line:%(lineno)d]: [%(levelname)s]: %(message)s')
-handler = logging.FileHandler('log.txt', encoding='utf-8')
+handler = logging.FileHandler('logs/spider.log', encoding='utf-8')
 handler.setFormatter(formatter)
 
 # logging.basicConfig(filename='log', datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO,
