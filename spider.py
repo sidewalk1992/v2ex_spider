@@ -18,6 +18,8 @@ ua = UserAgent()
 class V2exSpider:
     def __init__(self):
         self.homepage = 'https://www.v2ex.com'
+        self.existed_cnt = 0  # 已存在topic数目
+        self.fail_cnt = 0  # 失败次数
 
     def fetch_html(self, url):
         """获取页面 content """
@@ -59,26 +61,29 @@ class V2exSpider:
         entity = session.query(Topic).filter_by(url=url).first()
         if entity:
             logger.warning('topic已存在，id:%s' % entity.id)
+            self.existed_cnt += 1
+            return False
         else:
             t = Topic(url=url, author=author, title=title)
             t.save()
             logger.info(t)
+            return True
         
     def main(self):
-        fail_cnt = 0
         urls = ['{homepage}/recent?p={index}'.format(homepage=self.homepage, index=i) for i in range(0, 14692)]  # 14692
         for url in urls:
             logger.info('Featching: %s' % url)
-            time.sleep(1)
             try:
                 html = self.fetch_html(url)
                 self.parse_topics_page(html)
-                fail_cnt = 0
+                self.fail_cnt = 0
             except:
-                fail_cnt += 1
+                self.fail_cnt += 1
                 logger.error(traceback.format_exc())
-            if fail_cnt > 30:
-                break
+            finally:
+                time.sleep(1)
+                if self.fail_cnt > 30 or self.existed_cnt > 300:
+                    break
 
 
 if __name__ == '__main__':
