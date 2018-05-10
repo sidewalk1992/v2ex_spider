@@ -8,5 +8,6 @@ gunicorn
 flask
 gevent
 tornado
-celery
 redis
+celery
+flower
