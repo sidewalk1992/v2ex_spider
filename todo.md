@@ -1,10 +1,13 @@
 - docker
     - .dockerignore失效
-    - 日志记录应该存放在哪儿？容器？宿主机？
+    - 日志记录应该存放在哪儿？容器？宿主机？维护几套日志？
     - pip源替换
+    - supervisor管理celery
 
 - 项目
     - tornado
     - celery
     - mongodb
     - redis
+    - 压力测试接口（flask/tornado）
+    - 前端，vue.js
