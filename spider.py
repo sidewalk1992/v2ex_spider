@@ -11,6 +11,7 @@ from sqlalchemy.exc import IntegrityError
 from db import session, Topic
 from utils.log import logger
 from conf import cookies
+from tasks import app
 
 ua = UserAgent()
 
@@ -86,7 +87,12 @@ class V2exSpider:
                     break
 
 
-if __name__ == '__main__':
+@app.task
+def main():
     v2ex = V2exSpider()
     v2ex.main()
+
+
+if __name__ == '__main__':
+    main()
 

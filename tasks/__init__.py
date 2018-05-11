@@ -13,13 +13,19 @@ app.conf.task_time_limit = 30 * 60
 app.conf.redis_max_connections = 100
 app.conf.result_cache_max = 5000 # 存储n条任务结果
 app.conf.worker_max_tasks_per_child = 1000 # 每个worker执行n次重启（资源释放问题）
+app.conf.imports = ['spider']
 
 app.conf.beat_schedule = {
-    'add-every-30-seconds': {
-        'task': 'tasks.add',
-        'schedule': 30.0,
-        # 'schedule': crontab(hour=7, minute=30, day_of_week=1),
-        'args': (16, 16)
+    # 'add-every-30-seconds': {
+    #     'task': 'tasks.add',
+    #     'schedule': 30.0,
+    #     # 'schedule': crontab(hour=7, minute=30, day_of_week=1),
+    #     'args': (16, 16)
+    # },
+    'spider': {
+        'task': 'spider',
+        'schedule': crontab(hour='*/1'),
+        'args': None
     },
 }
 
