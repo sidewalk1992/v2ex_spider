@@ -103,7 +103,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+.idea/
 conf.py
 logs/
 celerybeat-schedule.db
-.idea/
+celerybeat.pid

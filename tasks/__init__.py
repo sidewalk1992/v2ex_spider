@@ -23,7 +23,7 @@ app.conf.beat_schedule = {
     #     'args': (16, 16)
     # },
     'spider': {
-        'task': 'spider',
+        'task': 'spider.main',
         'schedule': crontab(hour='*/1'),
         'args': None
     },
