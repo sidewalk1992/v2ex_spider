@@ -8,7 +8,7 @@ start(){
     --workers 4 \
     --worker-class gevent \
     --max-requests 100 \
-    --access-logformat='%(L)s %(h)s %(l)s %(t)s "%(r)s" %(s)s %(b)s' \
+    --access-logformat='%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s" %(L)s' \
     --access-logfile=logs/gunicorn.access.log \
     --error-logfile=logs/gunicorn.error.log \
     --log-level debug \
