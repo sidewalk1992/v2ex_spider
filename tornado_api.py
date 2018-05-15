@@ -10,13 +10,14 @@ from db import session, Topic
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
-        offset = self.get_argument('offset')
+        offset = self.get_argument('offset', 0)
         limit = self.get_argument('limit', 10)
 
         entities = session.query(Topic).offset(offset).limit(limit).all()
         data = [e.to_dict() for e in entities]
 
-        self.write({'success': True, 'msg': '', 'data': data})
+        # self.write({'success': True, 'msg': '', 'data': data})
+        self.render('index.html', data=data)
 
 
 if __name__ == '__main__':
@@ -30,5 +31,5 @@ if __name__ == '__main__':
     application = tornado.web.Application([
         (r'/', IndexHandler),
     ], **settings)
-    application.listen(8888)
+    application.listen(9999)
     tornado.ioloop.IOLoop.current().start()

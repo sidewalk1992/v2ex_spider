@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 from db import session, Topic
 
@@ -13,9 +13,10 @@ def index():
     entities = session.query(Topic).offset(offset).limit(limit).all()
     data = [e.to_dict() for e in entities]
 
-    return jsonify(success=True, msg='', data=data)
+    # return jsonify(success=True, msg='', data=data)
+    return render_template('index.html', data=data)
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8888, debug=True)
+    app.run(host='0.0.0.0', port=9999, debug=True)
 
