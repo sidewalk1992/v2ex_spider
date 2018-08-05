@@ -29,7 +29,7 @@ class V2exSpider:
         if resp.status_code == 200:
             return resp.content
         else:
-            logger.error('resp.status_code: %s' % resp.status_code)
+            raise Exception('resp.status_code: %s' % resp.status_code)
 
     def parse_topics_page(self, html):
         """解析话题列表页面"""
@@ -44,6 +44,8 @@ class V2exSpider:
             # 解析详情页
             # topic_html = self.fetch_html(url)
             # self.parse_topic_page(url, topic_html)
+        else:
+            raise Exception('nothing to parse.')
 
     def parse_topic_page(self, url, html):
         """解析话题详情页面"""
@@ -63,12 +65,10 @@ class V2exSpider:
         if entity:
             logger.warning('topic已存在，id:%s' % entity.id)
             self.existed_cnt += 1
-            return False
         else:
             t = Topic(url=url, author=author, title=title)
             t.save()
             logger.info(t)
-            return True
         
     def main(self):
         urls = ['{homepage}/recent?p={index}'.format(homepage=self.homepage, index=i) for i in range(0, 14692)]  # 14692
